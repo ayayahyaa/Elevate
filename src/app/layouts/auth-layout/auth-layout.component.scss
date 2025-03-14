@@ -1,0 +1,17 @@
+
+%shared-styles{
+  font-family: Poppins;
+  vertical-align: middle;
+}
+
+.auth {
+  h1 {
+    @extend %shared-styles;
+  }
+  h2 {
+    @extend %shared-styles;
+  }
+  p {
+    @extend %shared-styles;
+  }
+}
