@@ -3,20 +3,73 @@
     <div>
       <h2 class="sign-in-title">Sign in</h2>
       <div class="h-[1.9338rem] ml-80"></div>
-      <form class="form">
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()"
+      class="form">
         <div class="input">
           <input type="email" placeholder="Enter Email" class="input-field">
+          @if ( loginForm.get('email')?.errors &&  loginForm.get('email')?.touched) {
+            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+              <svg class="shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="sr-only">Danger</span>
+              <div>
+                  <ul class="mt-1.5 list-disc list-inside">
+                    @if ( loginForm.get('email')?.getError('required')) {
+                      <li>Email is required</li>
+                    }
+                    @else if ( loginForm.get('email')?.getError('email')) {
+                      <li>Enter valid email</li>
+                    }
+                </ul>
+              </div>
+            </div>
+          }
         </div>
+
         <div class="password">
           <input type="password" placeholder="Password" class="input-field">
           <i class="password-icon fas fa-eye"></i>
+          @if (loginForm.get('password')?.errors && loginForm.get('rePassword')?.touched) {
+            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+              <svg class="shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="sr-only">Danger</span>
+              <div>
+                  <ul class="mt-1.5 list-disc list-inside">
+                    @if (loginForm.get('password')?.getError('required')) {
+                      <li>Password is required</li>
+                    }
+                    @else if (loginForm.get('password')) {
+                      <li>Enter valid password</li>
+                    }
+                </ul>
+              </div>
+            </div>
+          }
         </div>
+
         <div class="mb-4 text-right">
           <a routerLink="/auth/forgot" class="recover">Recover Password ?</a>
         </div>
-        <button type="submit" class="sign-in-btn">
+
+        <button [disabled]="isLoading" type="submit" class="sign-in-btn">
           <span class="sign-in-text">Sign in</span>
+          @if (isLoading) {
+            <span><i class="mx-5 fas fs-spin fa-spinner"></i></span>
+          }
         </button>
+
+          @if (msgError) {
+            <p class="px-2 py-2 text-center text-white bg-red-300 border">{{msgError}}</p>
+          }
+
+          @if (isSuccess) {
+            <p class="px-2 py-2 text-center text-white bg-green-300 border">Account Created</p>
+          }
+
+
         <div class="separator-container">
           <div class="separator-line"></div>
           <span class="separator-text">Or Continue with</span>
